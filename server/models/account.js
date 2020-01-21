@@ -10,4 +10,4 @@ var Account = new Schema({
     created: {type: Date, default: Date.now}
 });
 
-module.exprots = mongoose.model('account', Account);
+module.exports = mongoose.model('account', Account);

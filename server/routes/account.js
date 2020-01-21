@@ -7,7 +7,12 @@ var router = express.Router();
 
 //회원가입
 router.post('/signup', function(req, res){
-    Account.findOne({user_id: req.body.user_id, function(err, exists){
+
+    console.log('..sign-up');
+    console.log('user_id : ' + req.body.user_id);
+
+    Account.findOne({user_id: req.body.user_id}, function(err, exists){
+        
         if(err) throw err;
         if(exists){
             return res.status(409).json({
@@ -20,6 +25,7 @@ router.post('/signup', function(req, res){
             var account = new Account({
                 user_id: req.body.user_id,
                 password: hash,
+                user_name: req.body.user_name,
                 salt: salt
             });
             account.save(function(err){
@@ -27,7 +33,7 @@ router.post('/signup', function(req, res){
                 return res.json({success: true});
             });
         });
-    }});
+    })
 });
 
 //로그인
