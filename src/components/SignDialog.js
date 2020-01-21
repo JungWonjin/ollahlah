@@ -15,23 +15,31 @@ const myStyle = makeStyles(theme => ({
 const SignDialog = (props) => {
 
     const [signClsfc, setSignClsfc] = useState("in");
+    const [dialogTitle, setDialogTitle] = useState("로그인");
 
     const changeSignIn = () => {
         setSignClsfc("in");
+        setDialogTitle("로그인");
     }
     const changeSignUp = () => {
         setSignClsfc("up");
+        setDialogTitle("회원가입");
     }
+
+    const signDialogContent = () => {
+        if(signClsfc === "in"){
+            return (<SignIn classes={classes} changeFunc={changeSignUp} />);
+        }else{
+            return (<SignUp classes={classes} changeFunc={changeSignIn} />);
+        }
+    }
+    
     const classes = myStyle();
     return (
         <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title" maxWidth="xs">
-            <DialogTitle id="form-dialog-title">로그인</DialogTitle>
+            <DialogTitle id="form-dialog-title">{dialogTitle}</DialogTitle>
             <DialogContent>
-                    {
-                        signClsfc === "in"
-                            ? (<SignIn classes={classes} changeFunc={changeSignUp} />)
-                            : (<SignUp classes={classes} changeFunc={changeSignIn} />)
-                    }
+                    {signDialogContent()}
             </DialogContent>
         </Dialog>
     );
