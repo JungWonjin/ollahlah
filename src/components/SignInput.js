@@ -1,29 +1,31 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
-const SignInput = () => {
+const SignInput = (props) => {
     
     return(
         <div>
-            <TextField
+            <TextField onChange={props.onChange}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
                 id="userId"
-                label="이메일 주소"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
+                label="Email Address"
+                name="userId"
                 autoComplete="email"
-                autoFocus
-            />
-            <TextField
-                id="password"
-                label="비밀번호"
+              />
+              <TextField onChange={props.onChange}
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
                 autoComplete="current-password"
-            />
+              />
         </div>
     );
 };

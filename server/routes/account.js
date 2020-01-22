@@ -48,7 +48,9 @@ router.post('/signin', function(req, res){
         }
 
         var validate = hasher({password: req.body.password, salt: account.salt}, function(err, pass, salt, hash){
+            
             if(hash === account.password){
+
                 var session = req.session;
                 session.loginInfo = {
                     _id: account._id,
