@@ -70,5 +70,19 @@ router.post('/signin', function(req, res){
 //회원정보조회
 //회원정보수정
 //로그아웃
+router.get('/signout', function(req, res){
+    req.session.destroy(function() {
+        
+    });
+    return res.json({success: true});
+});
+
+router.get('/check', function(req, res) {
+    if(req.session.loginInfo.user_id === ''){
+        return res.json({userId: ''});
+    }
+    return res.json({userId: req.session.loginInfo.user_id});
+    
+});
 
 module.exports = router;

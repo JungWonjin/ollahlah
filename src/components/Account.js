@@ -48,13 +48,14 @@ function Account(props) {
   const submitSignUp = (e) => {
     e.preventDefault();
     axios.post('/api/account/signup',
-            qs.stringify({'user_id': userInfo.userId,
+            {'user_id': userInfo.userId,
             'password': userInfo.password,
-            'user_name': userInfo.userName}))
+            'user_name': userInfo.userName})
         .then((res) => {
-        alert('가입완료');
+          alert('가입완료');
+          props.history.push('/');
         }).catch((err) => {
-          alert("error");
+          alert(err);
         });
   };
 
@@ -65,8 +66,9 @@ function Account(props) {
           'password': userInfo.password})
           .then((res) => {
               alert("success");
+              props.history.push('/login');
           }).catch((err) => {
-            alert("nooooooooooooo");
+            alert(err);
           });
     
   };
@@ -74,7 +76,7 @@ function Account(props) {
   const classes = useStyles();
 
   const signUpView = (
-    <form onSubmit={submitSignUp} className={classes.form} noValidate>
+    <form onSubmit={submitSignUp} className={classes.form}>
       <TextField onChange={handleChange}
         autoComplete="fname"
         margin="normal"
@@ -108,7 +110,7 @@ function Account(props) {
   );
 
   const signInView = (
-    <form onSubmit={submitSignIn} className={classes.form} noValidate>
+    <form onSubmit={submitSignIn} className={classes.form}>
       <SignInput onChange={handleChange} />
       <Button
         type="submit"
