@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 const SignInput = (props) => {
-    
+  
     return(
         <div>
             <TextField onChange={props.onChange}
@@ -14,6 +14,7 @@ const SignInput = (props) => {
                 label="Email Address"
                 name="userId"
                 autoComplete="email"
+                disabled={props.mode === "modify"}
               />
               <TextField onChange={props.onChange}
                 variant="outlined"

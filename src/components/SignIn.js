@@ -3,6 +3,6 @@ import Account from './Account';
 
 export default function SignIn(props) {
   return (
-      <Account mode={true} history={props.history}/>
+      <Account mode="signin" history={props.history}/>
   );
 }

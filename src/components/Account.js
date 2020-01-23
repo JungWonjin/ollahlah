@@ -62,8 +62,8 @@ function Account(props) {
   const submitSignIn = (e) => {
     e.preventDefault();
     axios.post('/api/account/signin',
-          {'user_id': userInfo.userId,
-          'password': userInfo.password})
+              {'user_id': userInfo.userId,
+              'password': userInfo.password})
           .then((res) => {
               alert("success");
               props.history.push('/login');
@@ -73,6 +73,18 @@ function Account(props) {
     
   };
   
+  const submitModify = (e) => {
+    e.preventDefault();
+    axios.post('/api/account/modfy',
+              {'user_name': userInfo.userName,
+              'password': userInfo.password})
+          .then((res) => {
+
+          }).catch((err) => {
+
+          });
+  };
+
   const classes = useStyles();
 
   const signUpView = (
@@ -136,14 +148,66 @@ function Account(props) {
     </form>
   );
 
+  const modifyView = (
+    <form onSubmit={submitModify} className={classes.form}>    
+      <TextField onChange={handleChange}
+        autoComplete="fname"
+        margin="normal"
+        name="userName"
+        variant="outlined"
+        required
+        fullWidth
+        id="userName"
+        label="Name"
+        autoFocus
+      />
+      <SignInput onChange={handleChange} mode="modify" />
+
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.submit}
+      >
+        Modify
+      </Button>
+    </form>    
+  );
+
+  const switchView = (mode) => {
+
+    let view = null;
+    switch(mode){
+      case "signin":
+        view = signInView;
+      break;
+        
+      case "signup":
+        view = signUpView;
+      break;
+
+      case "modify":
+        view = modifyView;
+      break;
+
+      default:
+        
+        break;
+    }
+
+    return view;
+
+  };
+
     return(
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                  {props.mode ? "Sign in" : "Sign up" }
+                  {props.mode}
                 </Typography>
-                {props.mode ? signInView : signUpView}
+              {switchView(props.mode)}
             </div>
         </Container>
     );
@@ -151,7 +215,7 @@ function Account(props) {
 }
 
 Account.propTypes = {
-  mode: PropTypes.bool,
+  mode: PropTypes.string,
   onRegister: PropTypes.func
 };
 

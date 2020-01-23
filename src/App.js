@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './Header';
 import { BrowserRouter, Route } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import { render } from '@testing-library/react';
 import Login from './components/Login';
+import Modify from './components/Modify';
 
 function App() {
-  
-  const [isLogin, setIsLogin] = useState(false);
 
   return (
       <BrowserRouter>
@@ -16,6 +14,7 @@ function App() {
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
+        <Route path="/modify" component={Modify} />
       </BrowserRouter>
   );
 }
