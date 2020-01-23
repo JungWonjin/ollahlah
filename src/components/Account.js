@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'querystring';
 import SignInput from './SignInput';
+import SignInfoContext from '../Store/SignInfoContext';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 function Account(props) {
 
   const [userInfo, setUserInfo] = useState({userId: '', password: '', userName: ''});
+  const { setIsSignIn } = useContext(SignInfoContext);
 
   const handleChange = (e) => {
     setUserInfo({
@@ -65,7 +67,9 @@ function Account(props) {
               {'user_id': userInfo.userId,
               'password': userInfo.password})
           .then((res) => {
-              alert("success");
+              window.sessionStorage.setItem('id', res.data.userId);
+              window.sessionStorage.setItem('name', res.data.userName)
+              setIsSignIn(true);
               props.history.push('/login');
           }).catch((err) => {
             alert(err);
@@ -75,11 +79,13 @@ function Account(props) {
   
   const submitModify = (e) => {
     e.preventDefault();
-    axios.post('/api/account/modfy',
+    axios.put('/api/account/modify',
               {'user_name': userInfo.userName,
+              'user_id': userInfo.userId,
               'password': userInfo.password})
           .then((res) => {
-
+            window.sessionStorage.setItem('name', res.data.userName);
+            props.history.push('/');
           }).catch((err) => {
 
           });
@@ -149,6 +155,7 @@ function Account(props) {
   );
 
   const modifyView = (
+    
     <form onSubmit={submitModify} className={classes.form}>    
       <TextField onChange={handleChange}
         autoComplete="fname"
@@ -160,6 +167,7 @@ function Account(props) {
         id="userName"
         label="Name"
         autoFocus
+        value={window.sessionStorage.getItem('name')}
       />
       <SignInput onChange={handleChange} mode="modify" />
 

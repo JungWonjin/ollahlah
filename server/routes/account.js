@@ -56,7 +56,7 @@ router.post('/signin', function(req, res){
                     _id: account._id,
                     user_id: account.user_id
                 };
-                return res.json({success: true});
+                return res.json({success: true, userId: account.user_id, userName: account.user_name});
             }else{
                 return res.status(401).json({
                     error: "no password",
@@ -69,6 +69,35 @@ router.post('/signin', function(req, res){
 
 //회원정보조회
 //회원정보수정
+router.put('/modify', function(req, res){
+    
+    Account.findById(req.session.loginInfo._id, function(err, account){
+        
+        if(err) throw err;
+        if(!account){
+            return res.status(404).json({
+                error: "no id",
+                code: 1
+            });
+        }
+        
+        hasher({password: req.body.password}, function(err, pass, salt, hash){
+            account.password = pass;
+            account.salt = salt;
+            account.user_name = req.body.userName;
+
+            account.save(function(err){
+                if(err) throw err;
+                return res.json({success: true, userName: account.user_name});
+            });
+        });
+
+
+        
+    })
+    
+});
+
 //로그아웃
 router.get('/signout', function(req, res){
     req.session.destroy(function() {

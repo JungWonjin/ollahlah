@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
+import SignInfoContext from '../Store/SignInfoContext';
 
 
 function Login (props) {
 
+    const { setIsSignIn } = useContext(SignInfoContext);
+
     const handleLogout = (e) => {
         axios.get('/api/account/signout')
             .then((res) => {
-                if(res.data.success) props.history.push('/');
+                if(res.data.success){
+                    window.sessionStorage.clear();
+                    setIsSignIn(false);
+                    props.history.push('/');
+                }
             });
     };
 
@@ -19,10 +26,6 @@ function Login (props) {
                 alert(res.data.userId);
             })
     };
-
-    const goModify = () => {
-        props.history.push('/modify');
-    }
 
     return (
         <div>
