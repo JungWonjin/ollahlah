@@ -30,7 +30,12 @@ router.post('/signup', function(req, res){
             });
             account.save(function(err){
                 if(err) throw err;
-                return res.json({success: true});
+                var session = req.session;
+                session.loginInfo = {
+                    _id: account._id,
+                    user_id: account.user_id
+                };
+                return res.json({success: true, userId: account.user_id, userName: account.user_name});
             });
         });
     })
@@ -82,18 +87,15 @@ router.put('/modify', function(req, res){
         }
         
         hasher({password: req.body.password}, function(err, pass, salt, hash){
-            account.password = pass;
+            account.password = hash;
             account.salt = salt;
-            account.user_name = req.body.userName;
+            account.user_name = req.body.user_name;
 
             account.save(function(err){
                 if(err) throw err;
                 return res.json({success: true, userName: account.user_name});
             });
         });
-
-
-        
     })
     
 });

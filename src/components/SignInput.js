@@ -15,6 +15,7 @@ const SignInput = (props) => {
                 name="userId"
                 autoComplete="email"
                 disabled={props.mode === "modify"}
+                defaultValue={props.mode === "modify" ? window.sessionStorage.getItem('id') : null}
               />
               <TextField onChange={props.onChange}
                 variant="outlined"

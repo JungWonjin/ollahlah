@@ -55,6 +55,9 @@ function Account(props) {
             'user_name': userInfo.userName})
         .then((res) => {
           alert('가입완료');
+          window.sessionStorage.setItem('id', res.data.userId);
+          window.sessionStorage.setItem('name', res.data.userName)
+          setIsSignIn(true);
           props.history.push('/');
         }).catch((err) => {
           alert(err);
@@ -104,7 +107,7 @@ function Account(props) {
         fullWidth
         id="userName"
         label="Name"
-        autoFocus
+        
       />
       <SignInput onChange={handleChange} />
 
@@ -166,8 +169,7 @@ function Account(props) {
         fullWidth
         id="userName"
         label="Name"
-        autoFocus
-        value={window.sessionStorage.getItem('name')}
+        defaultValue={window.sessionStorage.getItem('name')}
       />
       <SignInput onChange={handleChange} mode="modify" />
 
